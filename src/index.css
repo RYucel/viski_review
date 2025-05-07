@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 10% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 10%;
+    
+    --primary: 220 70% 50%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 210 30% 98%;
+    --secondary-foreground: 220 10% 10%;
+    
+    --muted: 210 5% 96%;
+    --muted-foreground: 220 5% 50%;
+    
+    --accent: 220 60% 55%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    
+    --border: 210 6% 90%;
+    --input: 210 6% 90%;
+    --ring: 220 70% 50%;
+    
+    --radius: 0.5rem;
+  }
+  
+  .dark {
+    --background: 220 10% 10%;
+    --foreground: 0 0% 98%;
+    
+    --card: 220 10% 12%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 220 10% 12%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 220 70% 50%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 220 6% 15%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 220 6% 18%;
+    --muted-foreground: 220 5% 64%;
+    
+    --accent: 220 60% 55%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    
+    --border: 220 6% 20%;
+    --input: 220 6% 20%;
+    --ring: 220 70% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  /* Glassmorphism yardımcı class'lar */
+  .glass {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 32px 0 rgba(31, 38, 135, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .frosted {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 32px 0 rgba(31, 38, 135, 0.10);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .glass-dark {
+    background: rgba(40, 40, 50, 0.45);
+    box-shadow: 0 4px 32px 0 rgba(40, 40, 50, 0.20);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    border: 1px solid rgba(40, 40, 50, 0.18);
+  }
+  
+  /* 3D Glassmorphism için yeni sınıflar */
+  .perspective-1000 {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  
+  .shadow-glass-strong {
+    box-shadow: 
+      0 10px 30px -5px rgba(31, 38, 135, 0.25),
+      0 8px 10px -6px rgba(31, 38, 135, 0.1);
+  }
+  
+  /* Transform yardımcı sınıfları */
+  .translate-z-0 {
+    transform: translateZ(0px);
+  }
+  
+  .translate-z-12 {
+    transform: translateZ(12px);
+  }
+  
+  .rotate-y-3 {
+    transform: rotateY(3deg);
+  }
+  
+  .-rotate-y-3 {
+    transform: rotateY(-3deg);
+  }
+
+  
+  body {
+    @apply bg-background text-foreground font-sans;
+    /* I, Robot film renkleri - futuristik beyaz ton */
+    background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+.whisky-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.whisky-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.filter-transition {
+  transition: all 0.3s ease;
+}
+
+/* Animation for page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+@layer components {
+  .border-border {
+    border-color: var(--border);
+  }
+}
