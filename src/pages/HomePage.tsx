@@ -60,9 +60,9 @@ const HomePage: React.FC = () => {
               transition={{ duration: 0.5 }}
             >
               <div className="text-center">
-                <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">Viski Dünyasına Kişisel Bir Bakış</h1>
+                <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">İmge ve Rüştü ile Viski Dünyasına Yolculuk</h1>
                 <p className="text-foreground/80 mb-6">
-                  İçtiğimiz viskilere dair detaylı değerlendirmeler, lezzet notaları ve puanlamaları bu sitede bulabilirsiniz.
+                  Sizlere en özel viskileri tanıtıyor, lezzet notalarını paylaşıyor ve kişisel değerlendirmelerimizle bu eşsiz deneyimi sizinle buluşturuyoruz. Her damla bir hikaye, her yudum bir keşif!
                 </p>
                 
                 {/* Arama Kutusu */}
