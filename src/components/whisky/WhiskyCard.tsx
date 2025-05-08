@@ -18,7 +18,7 @@ const WhiskyCard: React.FC<WhiskyCardProps> = ({ whisky, priority = false }) => 
       transition={{ duration: 0.2 }}
     >
       <Link to={`/whiskies/${whisky.id}`}>
-        <div className="relative aspect-[3/4] overflow-hidden">
+        <div className="relative aspect-[4/3] overflow-hidden">
           {whisky.image_url ? (
             <img
               src={whisky.image_url}
@@ -28,43 +28,43 @@ const WhiskyCard: React.FC<WhiskyCardProps> = ({ whisky, priority = false }) => 
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-secondary/50">
-              <Whiskey size={64} className="text-primary/40" />
+              <Whiskey size={48} className="text-primary/40" />
             </div>
           )}
           
           {/* Rating Badge */}
-          <div className="absolute top-3 right-3 bg-background/90 backdrop-blur-sm rounded-full w-12 h-12 flex items-center justify-center shadow-md">
-            <span className={`text-lg font-bold ${getRatingColor(whisky.overall_rating)}`}>
+          <div className="absolute top-2 right-2 bg-background/90 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center shadow-md">
+            <span className={`text-sm font-bold ${getRatingColor(whisky.overall_rating)}`}>
               {whisky.overall_rating}
             </span>
           </div>
           
           {/* Whisky of Week Badge */}
           {whisky.is_whisky_of_week && (
-            <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
+            <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded">
               Haftanın Viskisi
             </div>
           )}
         </div>
         
-        <div className="p-4">
-          <h3 className="font-serif text-lg font-semibold line-clamp-2 mb-1">{whisky.name}</h3>
+        <div className="p-3">
+          <h3 className="font-serif text-base font-semibold line-clamp-1 mb-0.5">{whisky.name}</h3>
           
           {whisky.distillery && (
-            <p className="text-sm text-muted-foreground mb-2">{whisky.distillery}</p>
+            <p className="text-xs text-muted-foreground mb-1.5">{whisky.distillery}</p>
           )}
           
-          <div className="flex flex-wrap gap-2 text-xs mb-3">
-            <span className="bg-secondary px-2 py-1 rounded">{whisky.type?.name || 'Whisky'}</span>
-            <span className="bg-secondary px-2 py-1 rounded">{whisky.origin?.name}</span>
-            <span className="bg-secondary px-2 py-1 rounded">
+          <div className="flex flex-wrap gap-1 text-xs mb-2">
+            <span className="bg-secondary px-1.5 py-0.5 rounded-sm">{whisky.type?.name || 'Whisky'}</span>
+            <span className="bg-secondary px-1.5 py-0.5 rounded-sm">{whisky.origin?.name}</span>
+            <span className="bg-secondary px-1.5 py-0.5 rounded-sm">
               {typeof whisky.age === 'number' ? `${whisky.age} Yıl` : 'NAS'}
             </span>
           </div>
           
           {whisky.notes && (
-            <p className="text-sm text-foreground/80 line-clamp-3">
-              {truncateText(whisky.notes, 100)}
+            <p className="text-xs text-foreground/80 line-clamp-2">
+              {truncateText(whisky.notes, 80)}
             </p>
           )}
         </div>

@@ -58,13 +58,18 @@ const WhiskyDetailPage: React.FC = () => {
           .in('id', flavorTagIds);
         
         if (tagsData) {
-          setFlavorTags(tagsData);
+          // Fix for Error 1: Cast the data to FlavorTag[] type
+          setFlavorTags(tagsData as unknown as FlavorTag[]);
         }
       }
       
       // Transform whisky data
       const transformedWhisky: Whisky = {
         ...whiskyData,
+        // Fix for Error 2: Convert null to undefined for distillery
+        distillery: whiskyData.distillery || undefined,
+        // Fix for region_id null issue
+        region_id: whiskyData.region_id || undefined,
         aromatic_profile: {
           body: whiskyData.body_rating,
           richness: whiskyData.richness_rating,
@@ -136,22 +141,21 @@ const WhiskyDetailPage: React.FC = () => {
   return (
     <>
       {/* Back Navigation */}
-      <div className="bg-muted py-4">
+      <div className="bg-muted py-2">
         <div className="container mx-auto px-4">
-          <Link to="/whiskies" className="inline-flex items-center text-primary hover:underline">
-            <ChevronLeft size={16} className="mr-1" />
+          <Link to="/whiskies" className="inline-flex items-center text-primary hover:underline text-sm">
+            <ChevronLeft size={14} className="mr-1" />
             <span>Tüm Viskilere Dön</span>
           </Link>
         </div>
       </div>
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column - Image */}
-          <div className="lg:col-span-5 xl:col-span-4">
-            {/* Image */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Sol Kolon - Resim */}
+          <div className="lg:col-span-4 xl:col-span-3">
             <div className="sticky top-24">
-              <div className="bg-card rounded-lg overflow-hidden shadow-md aspect-[3/4] relative">
+              <div className="bg-card rounded-lg overflow-hidden shadow-sm aspect-[3/4] relative">
                 {whisky.image_url ? (
                   <img
                     src={whisky.image_url}
@@ -161,7 +165,7 @@ const WhiskyDetailPage: React.FC = () => {
                 ) : (
                   <div className="w-full h-full bg-secondary/50 flex items-center justify-center">
                     <svg
-                      className="w-24 h-24 text-primary/30"
+                      className="w-16 h-16 text-primary/30"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -177,31 +181,34 @@ const WhiskyDetailPage: React.FC = () => {
                   </div>
                 )}
                 
-                {/* Badges */}
-                {whisky.is_whisky_of_week && (
-                  <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center">
-                    <Award size={14} className="mr-1" />
-                    Haftanın Viskisi
-                  </div>
-                )}
-                
-                {whisky.is_top_5 && (
-                  <div className="absolute top-3 right-3 bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center">
-                    <Bookmark size={14} className="mr-1" />
-                    Top 5
-                  </div>
-                )}
+                {/* Rozetler */}
+                <div className="absolute top-0 left-0 right-0 p-2 flex justify-between">
+                  {whisky.is_whisky_of_week && (
+                    <div className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-sm flex items-center">
+                      <Award size={10} className="mr-1" />
+                      Haftanın Viskisi
+                    </div>
+                  )}
+                  
+                  {whisky.is_top_5 && (
+                    <div className="bg-accent text-accent-foreground text-xs font-bold px-2 py-0.5 rounded-sm flex items-center ml-auto">
+                      <Bookmark size={10} className="mr-1" />
+                      Top 5
+                    </div>
+                  )}
+                </div>
               </div>
               
-              {/* Actions */}
-              <div className="mt-4 flex space-x-2">
+              {/* İşlemler */}
+              <div className="mt-3 flex space-x-2">
                 <div className="relative">
                   <Button
                     variant="outline"
                     onClick={handleShare}
-                    className="flex items-center"
+                    className="flex items-center text-xs py-1 h-8"
+                    size="sm"
                   >
-                    <Share2 size={16} className="mr-2" />
+                    <Share2 size={14} className="mr-1" />
                     Paylaş
                   </Button>
                   
@@ -209,29 +216,29 @@ const WhiskyDetailPage: React.FC = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute left-0 top-full mt-2 bg-card border border-border rounded-lg shadow-lg p-2 z-10 w-48"
+                      className="absolute left-0 top-full mt-1 bg-card border border-border rounded-lg shadow-lg p-1 z-10 w-40"
                     >
                       <button
                         onClick={() => shareOnPlatform('twitter')}
-                        className="block w-full text-left px-3 py-2 hover:bg-muted rounded-md"
+                        className="block w-full text-left px-2 py-1 hover:bg-muted rounded-md text-xs"
                       >
                         Twitter
                       </button>
                       <button
                         onClick={() => shareOnPlatform('facebook')}
-                        className="block w-full text-left px-3 py-2 hover:bg-muted rounded-md"
+                        className="block w-full text-left px-2 py-1 hover:bg-muted rounded-md text-xs"
                       >
                         Facebook
                       </button>
                       <button
                         onClick={() => shareOnPlatform('whatsapp')}
-                        className="block w-full text-left px-3 py-2 hover:bg-muted rounded-md"
+                        className="block w-full text-left px-2 py-1 hover:bg-muted rounded-md text-xs"
                       >
                         WhatsApp
                       </button>
                       <button
                         onClick={() => shareOnPlatform('copy')}
-                        className="block w-full text-left px-3 py-2 hover:bg-muted rounded-md"
+                        className="block w-full text-left px-2 py-1 hover:bg-muted rounded-md text-xs"
                       >
                         Linki Kopyala
                       </button>
@@ -241,8 +248,8 @@ const WhiskyDetailPage: React.FC = () => {
                 
                 {user && (
                   <Link to={`/admin/whiskies/${id}/edit`}>
-                    <Button variant="outline" className="flex items-center">
-                      <Edit size={16} className="mr-2" />
+                    <Button variant="outline" className="flex items-center text-xs py-1 h-8" size="sm">
+                      <Edit size={14} className="mr-1" />
                       Düzenle
                     </Button>
                   </Link>
@@ -251,137 +258,122 @@ const WhiskyDetailPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Right Column - Details */}
-          <div className="lg:col-span-7 xl:col-span-8">
-            <div className="bg-card rounded-lg p-6 md:p-8 shadow-md">
-              <header className="mb-6">
-                <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2">{whisky.name}</h1>
-                {whisky.distillery && (
-                  <p className="text-muted-foreground text-lg">{whisky.distillery}</p>
-                )}
+          {/* Sağ Kolon - Detaylar */}
+          <div className="lg:col-span-8 xl:col-span-9">
+            <div className="bg-card rounded-lg p-4 shadow-sm">
+              <header className="mb-4 flex items-center justify-between">
+                <div>
+                  <h1 className="font-serif text-2xl md:text-3xl font-bold">{whisky.name}</h1>
+                  {whisky.distillery && (
+                    <p className="text-muted-foreground text-sm">{whisky.distillery}</p>
+                  )}
+                </div>
+                <div className={`text-3xl font-bold ${getRatingColor(whisky.overall_rating)}`}>
+                  {whisky.overall_rating}
+                </div>
               </header>
               
-              {/* Key Details */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
-                <div className="bg-secondary p-3 rounded-lg">
-                  <span className="block text-xs text-foreground/70 mb-1">Menşei</span>
-                  <span className="font-medium">{whisky.origin?.name || 'Belirtilmemiş'}</span>
+              {/* Temel Bilgiler */}
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4 text-sm">
+                <div className="bg-secondary p-2 rounded-md">
+                  <span className="block text-xs text-foreground/70">Menşei</span>
+                  <span className="font-medium">{whisky.origin?.name || '-'}</span>
                 </div>
                 
                 {whisky.region && (
-                  <div className="bg-secondary p-3 rounded-lg">
-                    <span className="block text-xs text-foreground/70 mb-1">Bölge</span>
+                  <div className="bg-secondary p-2 rounded-md">
+                    <span className="block text-xs text-foreground/70">Bölge</span>
                     <span className="font-medium">{whisky.region.name}</span>
                   </div>
                 )}
                 
-                <div className="bg-secondary p-3 rounded-lg">
-                  <span className="block text-xs text-foreground/70 mb-1">Tür</span>
-                  <span className="font-medium">{whisky.type?.name || 'Belirtilmemiş'}</span>
+                <div className="bg-secondary p-2 rounded-md">
+                  <span className="block text-xs text-foreground/70">Tür</span>
+                  <span className="font-medium">{whisky.type?.name || '-'}</span>
                 </div>
                 
-                <div className="bg-secondary p-3 rounded-lg">
-                  <span className="block text-xs text-foreground/70 mb-1">ABV</span>
+                <div className="bg-secondary p-2 rounded-md">
+                  <span className="block text-xs text-foreground/70">ABV</span>
                   <span className="font-medium">%{whisky.abv}</span>
                 </div>
                 
-                <div className="bg-secondary p-3 rounded-lg">
-                  <span className="block text-xs text-foreground/70 mb-1">Yaş</span>
+                <div className="bg-secondary p-2 rounded-md">
+                  <span className="block text-xs text-foreground/70">Yaş</span>
                   <span className="font-medium">
                     {typeof whisky.age === 'number' ? `${whisky.age} Yıl` : 'NAS'}
                   </span>
                 </div>
                 
-                <div className="bg-secondary p-3 rounded-lg">
-                  <span className="block text-xs text-foreground/70 mb-1">Fiyat Aralığı</span>
+                <div className="bg-secondary p-2 rounded-md">
+                  <span className="block text-xs text-foreground/70">Fiyat</span>
                   <span className="font-medium">{whisky.price_range}</span>
                 </div>
-                
-                <div className="bg-secondary p-3 rounded-lg">
-                  <span className="block text-xs text-foreground/70 mb-1">Tadım Tarihi</span>
-                  <span className="font-medium">{formatDate(whisky.tasting_date)}</span>
-                </div>
-                
-                {whisky.purchase_date && (
-                  <div className="bg-secondary p-3 rounded-lg">
-                    <span className="block text-xs text-foreground/70 mb-1">Satın Alma</span>
-                    <span className="font-medium">{formatDate(whisky.purchase_date)}</span>
-                  </div>
-                )}
               </div>
               
-              {/* Rating */}
-              <div className="mb-8">
-                <h2 className="font-serif text-xl font-semibold mb-4">Puanlama</h2>
-                <div className="flex items-center">
-                  <div className={`text-5xl font-bold mr-4 ${getRatingColor(whisky.overall_rating)}`}>
-                    {whisky.overall_rating}
-                  </div>
-                  <div>
-                    <div className={`text-lg font-medium ${getRatingColor(whisky.overall_rating)}`}>
-                      {getRatingLabel(whisky.overall_rating)}
-                    </div>
-                    <div className="text-sm text-foreground/70">/ 100</div>
-                  </div>
+              {/* Aroma Profili ve Puanlama */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <h2 className="font-serif text-lg font-semibold mb-2">Aroma Profili</h2>
+                  <AromaticProfileChart profile={whisky.aromatic_profile} className="h-48" />
                 </div>
-              </div>
-              
-              {/* Aromatic Profile */}
-              <div className="mb-8">
-                <h2 className="font-serif text-xl font-semibold mb-4">Aroma Profili</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <AromaticProfileChart profile={whisky.aromatic_profile} className="h-64" />
-                  </div>
-                  <div className="space-y-2">
+                <div>
+                  <h2 className="font-serif text-lg font-semibold mb-2">Puanlama Detayları</h2>
+                  <div className="space-y-1 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-sm">Dolgunluk (Body)</span>
+                      <span>Dolgunluk (Body)</span>
                       <span className="font-medium">{whisky.aromatic_profile.body} / 5</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm">Zenginlik (Richness)</span>
+                      <span>Zenginlik (Richness)</span>
                       <span className="font-medium">{whisky.aromatic_profile.richness} / 5</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm">Tatlılık (Sweetness)</span>
+                      <span>Tatlılık (Sweetness)</span>
                       <span className="font-medium">{whisky.aromatic_profile.sweetness} / 5</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm">İslilik (Smokiness)</span>
+                      <span>İslilik (Smokiness)</span>
                       <span className="font-medium">{whisky.aromatic_profile.smokiness} / 5</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm">Bitiş (Finish)</span>
+                      <span>Bitiş (Finish)</span>
                       <span className="font-medium">{whisky.aromatic_profile.finish} / 5</span>
+                    </div>
+                    <div className="pt-1 mt-1 border-t border-border flex justify-between font-medium">
+                      <span>Genel Puan</span>
+                      <span className={getRatingColor(whisky.overall_rating)}>
+                        {whisky.overall_rating}/100 - {getRatingLabel(whisky.overall_rating)}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
               
-              {/* Flavor Tags */}
+              {/* Lezzet Notaları */}
               {flavorTags.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="font-serif text-xl font-semibold mb-4">Lezzet Notaları</h2>
+                <div className="mb-4">
+                  <h2 className="font-serif text-lg font-semibold mb-2">Lezzet Notaları</h2>
                   <FlavorTags tags={flavorTags} />
                 </div>
               )}
               
-              {/* Tasting Notes */}
-              <div className="mb-8">
-                <h2 className="font-serif text-xl font-semibold mb-4">Tadım Notları</h2>
-                <div className="prose max-w-none">
+              {/* Tadım Notları */}
+              <div className="mb-4">
+                <h2 className="font-serif text-lg font-semibold mb-2">Tadım Notları</h2>
+                <div className="prose max-w-none text-sm bg-secondary/50 p-3 rounded-md">
                   {whisky.notes.split('\n').map((paragraph, i) => (
-                    <p key={i} className="mb-4">{paragraph}</p>
+                    <p key={i} className="mb-2">{paragraph}</p>
                   ))}
                 </div>
               </div>
               
-              {/* Created/Updated Dates */}
-              <div className="text-xs text-foreground/50 pt-4 border-t border-border flex justify-between">
-                <span>Oluşturulma: {formatDate(whisky.created_at)}</span>
-                {whisky.created_at !== whisky.updated_at && (
-                  <span>Son Güncelleme: {formatDate(whisky.updated_at)}</span>
+              {/* Tarihler */}
+              <div className="text-xs text-foreground/50 pt-2 border-t border-border flex justify-between">
+                <span>Tadım: {formatDate(whisky.tasting_date)}</span>
+                {whisky.purchase_date && (
+                  <span>Satın Alma: {formatDate(whisky.purchase_date)}</span>
                 )}
+                <span>Oluşturulma: {formatDate(whisky.created_at)}</span>
               </div>
             </div>
           </div>
