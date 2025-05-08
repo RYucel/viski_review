@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Keep this line
 import { motion } from 'framer-motion';
 import { Search, ArrowRight, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import WhiskyCard from '../components/whisky/WhiskyCard';
 import { useWhiskies } from '../hooks/useWhiskies';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react'; // Remove this duplicate import line
 import { supabase } from '../lib/supabase-client';
 import { WhiskyType } from '../types/whisky'; // WhiskyType tanımınızın doğru olduğundan emin olun
 
@@ -12,6 +12,10 @@ const HomePage: React.FC = () => {
   const { whiskies, loading, error } = useWhiskies();
   const [popularCategories, setPopularCategories] = useState<WhiskyType[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  // Add the missing state and navigation hook
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   // Haftanın viskisi ve Top 5 için veri hazırlama
   const weeklyWhisky = whiskies?.find(w => w.is_whisky_of_week);
@@ -49,6 +53,26 @@ const HomePage: React.FC = () => {
 
     fetchPopularCategories();
   }, []);
+
+  // Handle and log errors from useWhiskies
+  useEffect(() => {
+    if (error) {
+      console.error("Error fetching whiskies for HomePage:", error);
+      // You could also set an error state here to display a message to the user
+    }
+  }, [error]);
+
+  // Define the event handlers
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/whiskies?search=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
 
   return (
     <>
@@ -108,14 +132,18 @@ const HomePage: React.FC = () => {
                 </p>
                 
                 {/* Arama Kutusu */}
-                <div className="relative max-w-md mx-auto">
+                <form onSubmit={handleSearchSubmit} className="relative max-w-md mx-auto">
                   <input
                     type="text"
                     placeholder="Viski adı, damıtımevi veya menşei ara..."
                     className="w-full pl-10 pr-4 py-3 rounded-full border border-input bg-background/70 backdrop-blur-sm"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                </div>
+                  {/* Arama butonunu gizli tutabiliriz, form gönderimi Enter ile çalışacaktır */}
+                  <button type="submit" className="hidden"></button>
+                </form>
               </div>
             </motion.div>
             
