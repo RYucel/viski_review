@@ -17,8 +17,6 @@ export const useWhiskies = (): UseWhiskiesReturn => {
     const fetchWhiskies = async () => {
       try {
         setLoading(true);
-        
-        // Viskileri çek
         const { data, error } = await supabase
           .from('whiskies')
           .select(`
@@ -54,10 +52,8 @@ export const useWhiskies = (): UseWhiskiesReturn => {
           setWhiskies(formattedWhiskies as Whisky[]);
         }
       } catch (error: any) {
-        console.error('Viskiler yüklenirken hata oluştu:', error);
-        setError(error.message || 'Viskiler yüklenirken bir hata oluştu');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching whiskies:', error);
+        setError(error.message || 'Error fetching whiskies');
       }
     };
     

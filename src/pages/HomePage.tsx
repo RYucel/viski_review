@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
                     <span className="font-medium">{weeklyWhisky.overall_rating}/100</span>
                   </div>
                   <Link 
-                    to={`/whisky/${weeklyWhisky.id}`}
+                    to={`/whiskies/${weeklyWhisky.id}`}
                     className="mt-3 text-primary hover:underline text-sm flex items-center"
                   >
                     Detaylar <ArrowRight className="ml-1 w-4 h-4" />
@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
                     <li key={whisky.id} className="flex items-center">
                       <span className="font-bold text-primary mr-2">{index + 1}.</span>
                       <Link 
-                        to={`/whisky/${whisky.id}`}
+                        to={`/whiskies/${whisky.id}`}
                         className="hover:text-primary transition-colors truncate"
                       >
                         {whisky.name}
